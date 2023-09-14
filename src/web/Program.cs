@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var basePath = Environment.GetEnvironmentVariable("BASE_PATH");
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -16,6 +17,15 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+
+if (!string.IsNullOrEmpty(basePath))
+{
+    app.Use((context, next) =>
+    {
+        context.Request.PathBase = new PathString(basePath);
+        return next();
+    });
 }
 
 app.UseHttpsRedirection();
