@@ -21,11 +21,7 @@ if (!app.Environment.IsDevelopment())
 
 if (!string.IsNullOrEmpty(basePath))
 {
-    app.Use((context, next) =>
-    {
-        context.Request.PathBase = new PathString(basePath);
-        return next();
-    });
+    app.UsePathBase(basePath);
 }
 
 app.UseHttpsRedirection();
